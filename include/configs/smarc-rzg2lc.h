@@ -152,11 +152,9 @@
         "echo Checking ${devtype} ${devnum}:${distro_bootpart} for FIT structure; " \
         "if load ${devtype} ${devnum}:${distro_bootpart} ${fitloadaddr} uboot/ubuntu/boot.sel; then " \
             "echo FIT structure detected (uboot/ubuntu/boot.sel found); " \
-            "setenv bootmode fit; " \
             "run boot_uc; " \
         "else " \
             "echo No FIT structure found on mmc ${devnum}:${distro_bootpart}, trying EFI; " \
-            "setenv bootmode efi; " \
             "run boot_efi; " \
         "fi;\0"
 
@@ -183,14 +181,7 @@
     "serverip=192.168.10.1\0" \
     "boot_uc=run load_uc;bootm 0x61000000#${fdtfile} 0x61000000#${fdtfile} ${fdt_addr_r}\0" \
     "bootmode=auto\0" /* Default to auto-detection */ \
-    "bootcmd=" \
-        "if test ${bootmode} = fit; then " \
-            "run boot_uc; " \
-        "elif test ${bootmode} = efi; then " \
-            "run boot_efi; " \
-        "else " \
-            "run detect_boot; " \
-        "fi;\0"
+    "bootcmd=run detect_boot;\0"
 
 /* Ethernet RAVB */
 #define CONFIG_BITBANGMII_MULTI
