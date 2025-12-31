@@ -158,6 +158,7 @@
 /* Combined Environment */
 #define CONFIG_EXTRA_ENV_SETTINGS \
     "console=ttySC0\0" \
+    "bootm_verify=yes\0" \
     "usb_pgood_delay=2000\0" \
     "fdt_addr_r=0x48000000\0" \
     "fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0" \
