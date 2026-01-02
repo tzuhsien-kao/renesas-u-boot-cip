@@ -180,6 +180,76 @@ config TARGET_ULCB
 	help
           Support for Renesas R-Car Gen3 ULCB platform
 
+config TARGET_RZG2L_DEV
+	bool "RZ/G2L Dev board"
+	help
+          Support for Renesas RZ/G2L Dev Platform
+
+config TARGET_SMARC_RZG2L
+	bool "RZ/G2L Dev board"
+	help
+          Support for Renesas RZ/G2L Dev Platform
+
+config TARGET_RZV2L_DEV
+	bool "RZ/V2L Dev board"
+	help
+          Support for Renesas RZ/V2L Dev Platform
+
+config TARGET_SMARC_RZV2L
+	bool "RZ/V2L Dev board"
+	help
+          Support for Renesas RZ/V2L Dev Platform
+
+config TARGET_RZG2LC_DEV
+	bool "RZ/G2LC Dev board"
+	help
+          Support for Renesas RZ/G2LC Dev Platform
+
+config TARGET_SMARC_RZG2LC
+	bool "RZ/G2LC SMARC board"
+	help
+          Support for Renesas RZ/G2LC Dev Platform
+
+config TARGET_RZG2UL_TYPE1_DEV
+	bool "RZ/G2UL TYPE1 Dev board"
+	help
+          Support for Renesas RZ/G2UL Type1 Dev Platform
+
+config TARGET_RZG2UL_TYPE1_DDR3L_DEV
+	bool "RZ/G2UL TYPE1 DDR3L Dev board"
+	help
+          Support for Renesas RZ/G2UL Type1 Dev Platform
+
+config TARGET_RZG2UL_TYPE2_DEV
+	bool "RZ/G2UL TYPE2 Dev board"
+	help
+          Support for Renesas RZ/G2UL Type2 Dev Platform
+
+config TARGET_SMARC_RZG2UL
+	bool "RZ/G2UL SMARC board"
+	help
+          Support for Renesas RZ/G2UL Dev Platform
+
+config TARGET_RZV2H_DEV
+	bool "RZ/V2H Dev board"
+	help
+          Support for Renesas RZ/V2H Dev Platform
+
+config TARGET_RZV2H_EVK_ALPHA
+	bool "RZ/V2H EVK Alpha board"
+	help
+          Support for Renesas RZ/V2H Dev Platform
+
+config TARGET_RZG3E_DEV
+	bool "RZ/G3E Dev board"
+	help
+          Support for Renesas RZ/G3E Dev Platform
+
+config TARGET_SMARC_RZG3E
+	bool "RZ/G3E SMARC board"
+	help
+          Support for Renesas RZ/G3E Dev Platform
+
 endchoice
 
 source "board/renesas/condor/Kconfig"

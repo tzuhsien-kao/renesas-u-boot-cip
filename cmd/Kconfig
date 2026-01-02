@@ -2121,6 +2121,18 @@ config CMD_QFW
 	  feature is to allow easy loading of files passed to qemu-system
 	  via -kernel / -initrd
 
+config CMD_ECC
+	bool "ecc"
+	help
+	  Add ecc command for user to add/remove ECC support.
+	  Use 'ecc help' to get usage log.
+
+config CMD_EVK
+        bool "evk"
+        help
+          Add evk command for user to use Wake up and Shut down command on 
+	  RZ/V2{M,MA} SoC.
+
 config CMD_PSTORE
 	bool "pstore"
 	help
@@ -2755,4 +2767,11 @@ config CMD_MESON
 	default y
 	help
 	  Enable useful commands for the Meson Soc family developed by Amlogic Inc.
+
+config CMD_RZG2L_ECC
+	bool "ECC command for RZ/G2L"
+	default n
+	help
+	  Enable the ECC command for Renesas RZ/G2L Series and RZ/Five MPUs.
+
 endmenu

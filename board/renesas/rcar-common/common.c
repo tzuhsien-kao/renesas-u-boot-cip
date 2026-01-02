@@ -24,6 +24,13 @@
 #include "../rzg-common/common.h"
 #endif
 
+#if defined(CONFIG_TARGET_HIHOPE_RZG2)
+#include <asm/system.h>
+#include <asm/ptrace.h>
+
+#include "../rzg-common/common.h"
+#endif
+
 DECLARE_GLOBAL_DATA_PTR;
 
 /* If the firmware passed a device tree use it for U-Boot DRAM setup. */

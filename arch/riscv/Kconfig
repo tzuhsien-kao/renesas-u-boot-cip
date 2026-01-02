@@ -39,6 +39,12 @@ config TARGET_SIPEED_MAIX
 config TARGET_OPENPITON_RISCV64
 	bool "Support RISC-V cores on OpenPiton SoC"
 
+config TARGET_RZF_DEV
+	bool "Support Renesas RZ/Five"
+
+config TARGET_SMARC_RZF
+        bool "Support Renesas RZ/Five"
+
 endchoice
 
 config SYS_ICACHE_OFF
@@ -83,9 +89,13 @@ source "board/thead/th1520_lpi4a/Kconfig"
 source "board/openpiton/riscv64/Kconfig"
 source "board/sipeed/maix/Kconfig"
 source "board/starfive/visionfive2/Kconfig"
+source "board/renesas/rzf-dev/Kconfig"
 
 # platform-specific options below
 source "arch/riscv/cpu/andesv5/Kconfig"
+source "arch/riscv/cpu/ax25/Kconfig"
+source "arch/riscv/cpu/rzfive/Kconfig"
+source "arch/riscv/cpu/rzfive/rzmpu/Kconfig"
 source "arch/riscv/cpu/fu540/Kconfig"
 source "arch/riscv/cpu/fu740/Kconfig"
 source "arch/riscv/cpu/generic/Kconfig"

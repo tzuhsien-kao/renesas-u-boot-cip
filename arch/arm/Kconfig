@@ -7,7 +7,6 @@ config SYS_ARCH
 config ARM64
 	bool
 	select PHYS_64BIT
-	select SYS_CACHE_SHIFT_6
 	imply SPL_SEPARATE_BSS
 
 config ARM64_CRC32
@@ -1040,7 +1039,7 @@ config ARCH_QEMU
 config ARCH_RMOBILE
 	bool "Renesas ARM SoCs"
 	select DM
-	select DM_SERIAL
+	select DM_SERIAL if !RZ_V2M
 	select GPIO_EXTRA_HEADER
 	imply BOARD_EARLY_INIT_F
 	imply CMD_DM

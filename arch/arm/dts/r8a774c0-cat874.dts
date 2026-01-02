@@ -319,7 +319,7 @@
 	};
 
 	sdhi3_pins: sd3 {
-		groups = "sdhi3_data4", "sdhi3_ctrl";
+		groups = "sdhi3_data8", "sdhi3_ctrl", "sdhi3_ds";
 		function = "sdhi3";
 		power-source = <1800>;
 	};
@@ -335,7 +335,7 @@
 	};
 
 	usb30_pins: usb30 {
-		groups = "usb30", "usb30_id";
+		groups = "usb30";
 		function = "usb30";
 	};
 
@@ -388,6 +388,21 @@
 	bus-width = <4>;
 	sd-uhs-sdr50;
 	sd-uhs-sdr104;
+	status = "okay";
+};
+
+&sdhi3 {
+	/* used for on-board 8bit eMMC */
+	pinctrl-0 = <&sdhi3_pins>;
+	pinctrl-1 = <&sdhi3_pins>;
+	pinctrl-names = "default", "state_uhs";
+
+	vmmc-supply = <&reg_3p3v>;
+	vqmmc-supply = <&reg_1p8v>;
+	bus-width = <8>;
+	mmc-hs200-1_8v;
+	mmc-hs400-1_8v;
+	non-removable;
 	status = "okay";
 };
 
