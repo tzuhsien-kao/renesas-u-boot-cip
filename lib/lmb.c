@@ -20,6 +20,42 @@ DECLARE_GLOBAL_DATA_PTR;
 
 #define LMB_ALLOC_ANYWHERE	0
 
+enum lmb_map_op {
+	LMB_MAP_OP_RESERVE = 0,
+	LMB_MAP_OP_FREE,
+	LMB_MAP_OP_ADD,
+};
+
+static int lmb_map_update_notify(phys_addr_t addr, phys_size_t size,
+				 enum lmb_map_op op, u32 flags)
+{
+	u64 efi_addr;
+	u64 pages;
+	efi_status_t status;
+
+	if (!CONFIG_IS_ENABLED(EFI_LOADER) || (flags & LMB_NONOTIFY))
+		return 0;
+
+	efi_addr = (uintptr_t)map_sysmem(addr, 0);
+	pages = efi_size_in_pages(size + (efi_addr & EFI_PAGE_MASK));
+	efi_addr &= ~EFI_PAGE_MASK;
+
+	status = efi_add_memory_map_pg(efi_addr, pages,
+				       op == LMB_MAP_OP_RESERVE ?
+				       EFI_BOOT_SERVICES_DATA :
+				       EFI_CONVENTIONAL_MEMORY,
+				       false);
+	if (status != EFI_SUCCESS) {
+		log_err("LMB Map notify failure %lu\n",
+			status & ~EFI_ERROR_MASK);
+		unmap_sysmem((void *)(uintptr_t)efi_addr);
+		return -1;
+	}
+	unmap_sysmem((void *)(uintptr_t)efi_addr);
+
+	return 0;
+}
+
 static void lmb_dump_region(struct lmb_region *rgn, char *name)
 {
 	unsigned long long base, size, end;
@@ -352,13 +388,19 @@ static long lmb_add_region(struct lmb_region *rgn, phys_addr_t base,
 /* This routine may be called with relocation disabled. */
 long lmb_add(struct lmb *lmb, phys_addr_t base, phys_size_t size)
 {
+	long ret;
 	struct lmb_region *_rgn = &(lmb->memory);
 
-	return lmb_add_region(_rgn, base, size);
+	ret = lmb_add_region(_rgn, base, size);
+	if (ret)
+		return ret;
+
+	return lmb_map_update_notify(base, size, LMB_MAP_OP_ADD, LMB_NONE);
 }
 
 long lmb_free(struct lmb *lmb, phys_addr_t base, phys_size_t size)
 {
+	long ret;
 	struct lmb_region *rgn = &(lmb->reserved);
 	phys_addr_t rgnbegin, rgnend;
 	phys_addr_t end = base + size - 1;
@@ -381,21 +423,27 @@ long lmb_free(struct lmb *lmb, phys_addr_t base, phys_size_t size)
 
 	/* Check to see if we are removing entire region */
 	if ((rgnbegin == base) && (rgnend == end)) {
+		enum lmb_flags flags = rgn->region[i].flags;
 		lmb_remove_region(rgn, i);
-		return 0;
+		ret = lmb_map_update_notify(base, size, LMB_MAP_OP_FREE, flags);
+		return ret;
 	}
 
 	/* Check to see if region is matching at the front */
 	if (rgnbegin == base) {
+		enum lmb_flags flags = rgn->region[i].flags;
 		rgn->region[i].base = end + 1;
 		rgn->region[i].size -= size;
-		return 0;
+		ret = lmb_map_update_notify(base, size, LMB_MAP_OP_FREE, flags);
+		return ret;
 	}
 
 	/* Check to see if the region is matching at the end */
 	if (rgnend == end) {
+		enum lmb_flags flags = rgn->region[i].flags;
 		rgn->region[i].size -= size;
-		return 0;
+		ret = lmb_map_update_notify(base, size, LMB_MAP_OP_FREE, flags);
+		return ret;
 	}
 
 	/*
@@ -410,9 +458,18 @@ long lmb_free(struct lmb *lmb, phys_addr_t base, phys_size_t size)
 long lmb_reserve_flags(struct lmb *lmb, phys_addr_t base, phys_size_t size,
 		       enum lmb_flags flags)
 {
+	long ret;
 	struct lmb_region *_rgn = &(lmb->reserved);
 
-	return lmb_add_region_flags(_rgn, base, size, flags);
+	ret = lmb_add_region_flags(_rgn, base, size, flags);
+	if (ret < 0)
+		return ret;
+
+	ret = lmb_map_update_notify(base, size, LMB_MAP_OP_RESERVE, flags);
+	if (ret)
+		return ret;
+
+	return ret;
 }
 
 long lmb_reserve(struct lmb *lmb, phys_addr_t base, phys_size_t size)

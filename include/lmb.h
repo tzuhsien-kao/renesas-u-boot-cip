@@ -16,10 +16,12 @@
  * enum lmb_flags - definition of memory region attributes
  * @LMB_NONE: no special request
  * @LMB_NOMAP: don't add to mmu configuration
+ * @LMB_NONOTIFY: do not notify other subsystems of changes to LMB memory
  */
 enum lmb_flags {
 	LMB_NONE		= 0x0,
 	LMB_NOMAP		= 0x4,
+	LMB_NONOTIFY		= 0x8,
 };
 
 /**
