@@ -231,14 +231,24 @@ config TARGET_RZG3S_DEV
           Support for Renesas RZ/G3S Dev Platform
 
 config TARGET_SMARC_RZG3S
-	bool "RZ/G3S SMARC board"
-	help
+        bool "RZ/G3S SMARC board"
+        help
           Support for Renesas RZ/G3S SMARC Platform
+
+config TARGET_RZG3E_DEV
+        bool "RZ/G3E Dev board"
+        help
+          Support for Renesas RZ/G3E Dev Platform
+
+config TARGET_SMARC_RZG3E
+        bool "RZ/G3E SMARC board"
+        help
+          Support for Renesas RZ/G3E SMARC Platform
 
 endchoice
 
 config SYS_SOC
-	default "rmobile"
+        default "rmobile"
 
 source "board/renesas/condor/Kconfig"
 source "board/renesas/draak/Kconfig"
@@ -255,6 +265,7 @@ source "board/renesas/rzv2l-dev/Kconfig"
 source "board/renesas/rzg2lc-dev/Kconfig"
 source "board/renesas/rzg2ul-dev/Kconfig"
 source "board/renesas/rzg3s-dev/Kconfig"
+source "board/renesas/rzg3e-dev/Kconfig"
 
 config MULTI_DTB_FIT_UNCOMPRESS_SZ
 	default 0x80000 if TARGET_HIHOPE_RZG2

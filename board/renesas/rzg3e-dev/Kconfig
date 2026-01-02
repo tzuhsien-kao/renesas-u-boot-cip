@@ -26,6 +26,6 @@ config SYS_VENDOR
 	default "renesas"
 
 config SYS_CONFIG_NAME
-	default "rzg3e-dev"
+	default "smarc-rzg3e"
 
 endif
